@@ -1,0 +1,424 @@
+{
+	"info": {
+		"_postman_id": "e9399959-42e3-40cd-8ca9-bc9989acb1d2",
+		"name": "bond",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23685035"
+	},
+	"item": [
+		{
+			"name": "잔고조회",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}?userNumber={{csNo}}&userPinCode={{pinNo}}",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "채권주문",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"orderType\": \"SELL\",\n  \"userNumber\": \"{{csNo}}\",\n  \"userPinCode\": \"{{pinNo}}\",\n  \"securityCode\": \"KR6150351D32\",\n  \"quantity\": 1,\n  \"price\": 7283\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders/bond/LISTED",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders",
+						"bond",
+						"LISTED"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "유저 채권 주문 조회",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders/bond/?userNumber={{csNo}}&userPinCode={{pinNo}}&inquiryType=BOND&date=20230322&bondMarketType=Listed&orderStatus=ORDER_FILLED&nxtKey=20230322365000000000000040000021000000000000000000",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders",
+						"bond",
+						""
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						},
+						{
+							"key": "inquiryType",
+							"value": "BOND"
+						},
+						{
+							"key": "date",
+							"value": "20230322"
+						},
+						{
+							"key": "bondMarketType",
+							"value": "Listed"
+						},
+						{
+							"key": "orderStatus",
+							"value": "ORDER_FILLED"
+						},
+						{
+							"key": "nxtKey",
+							"value": "20230322365000000000000040000021000000000000000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "채권조회",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/bond?userNumber={{csNo}}&userPinCode={{pinNo}}",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"bond"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "채권주문정정",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders/bond/LISTED/KR103502G9902/0000000000?userNumber={{csNo}}&userPinCode={{pinNo}}&correctionType=ALL&correctionQuantity=1&correctionPrice=10080",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders",
+						"bond",
+						"LISTED",
+						"KR103502G9902",
+						"0000000000"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						},
+						{
+							"key": "correctionType",
+							"value": "ALL"
+						},
+						{
+							"key": "correctionQuantity",
+							"value": "1"
+						},
+						{
+							"key": "correctionPrice",
+							"value": "10080"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "주문취소",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders/bond/LISTED/KR6150351D32/0040000016?userNumber={{csNo}}&userPinCode={{pinNo}}",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders",
+						"bond",
+						"LISTED",
+						"KR6150351D32",
+						"0040000016"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "주식 매수/매도 주문",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"price\": 103940,\n    \"quantity\": 1,\n    \"securityCode\": \"385550\",\n    \"orderPriceType\": \"LIMIT\",\n    \"marketTimeType\": \"REGULAR\",\n    \"userNumber\": \"H002750061297\",\n    \"userPinCode\": \"1004295416\",\n    \"orderType\": \"BUY\",\n    \"managementId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "주식주문내역 조회",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders?userNumber={{csNo}}&userPinCode={{pinNo}}&orderStatus=ALL&orderType=ALL&orderBy=DESC&date=20220608",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						},
+						{
+							"key": "orderStatus",
+							"value": "ALL"
+						},
+						{
+							"key": "orderType",
+							"value": "ALL"
+						},
+						{
+							"key": "orderBy",
+							"value": "DESC"
+						},
+						{
+							"key": "date",
+							"value": "20220608"
+						},
+						{
+							"key": "orderId",
+							"value": "2205130001",
+							"disabled": true
+						},
+						{
+							"key": "orderNumber",
+							"value": "18762",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "주식 정정/취소",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/orders/385550/0040000015?userNumber={{csNo}}&userPinCode={{pinNo}}&price=103910",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"orders",
+						"385550",
+						"0040000015"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						},
+						{
+							"key": "securityCode",
+							"value": "385550",
+							"disabled": true
+						},
+						{
+							"key": "originOrderNumber",
+							"value": "0040151325",
+							"disabled": true
+						},
+						{
+							"key": "price",
+							"value": "103910"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "채권 잔고 조회 확인 가능",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/kb/v1/accounts/{{accountId}}/bond?userNumber={{csNo}}&userPinCode={{pinNo}}",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"kb",
+						"v1",
+						"accounts",
+						"{{accountId}}",
+						"bond"
+					],
+					"query": [
+						{
+							"key": "userNumber",
+							"value": "{{csNo}}"
+						},
+						{
+							"key": "userPinCode",
+							"value": "{{pinNo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
