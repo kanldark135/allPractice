@@ -1,3 +1,100 @@
+#%% 
+
+# adhoc으로 당분간 대응
+
+import pymysql
+import json
+import requests
+import os
+import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv()
+
+withdrawal_uid = 0
+
+def db_get(withdrawal_uid):
+
+    host = os.environ.get('HOST')
+    db_user = os.environ.get('DB_USER')
+    pw = os.environ.get('PASSWORD')
+    db = os.environ.get('DB')
+    charset= os.environ.get('CHARSET')
+
+    # HOST=iruda.cp0tscwoictc.ap-northeast-2.rds.amazonaws.com
+    # DB_USER=iruda
+    # PASSWORD=4pD&S#srcCtV#uOaMP[y
+    # DB=iruda_trade
+    # CHARSET=utf8
+    conn = pymysql.connect(host = host, user = db_user, password = pw, database = db, charset = charset)
+    cur = conn.cursor()
+
+
+    sql =  "select stock_company_uid, stock_company_pin, c.stock_account_id, c.uid, " \
+        "iruda_member.decrypt(account_number, 'ACCOUNT') as account_number, pf.risk_grade, " \
+        "c.first_operation_started_date, " \
+        "(select max(created_at) from iruda_trade.deposit_withdraw " \
+        "where stock_account_id = s.stock_account_id and inout_type = 'IN' " \
+        "and trade_type NOT REGEXP '배당|수수료|예탁금이용료|환전' ) latest_deposited_at " \
+        "from iruda_member.contract c, iruda_trade.stock_account s, " \
+        "iruda_service.portfolio pf, iruda_service.product p " \
+        "where c.product_id = p.product_id and c.portfolio_id = pf.portfolio_id " \
+        f"and c.uid = {withdrawal_uid} " \
+        "and c.stock_account_id = s.stock_account_id and c.product_id=18 " \
+        "and c.status = 'ACTIVE' and s.status = 'ACTIVE' and c.first_operation_started_date is not null " \
+        "order by latest_deposited_at asc, first_operation_started_date asc;"
+
+    cur.execute(sql)
+    df = cur.fetchall()
+    conn.close()
+    
+    return df
+
+if __name__ == "__main__":
+    
+    withdrawal_uid = input("type in uid : ")
+    df = db_get(withdrawal_uid)
+    df_get = pd.DataFrame(df, columns = ['csNo', 'pinNo', 'account_id(needless)', 'uid', 'accountId', '1', '2', '3'])
+
+
+class bond_api:
+
+    endpoint = "https://kb.iruda.io"
+    userPassword = "VTYvK2xkQ1NMZ1NvcXFpRWh2NjRjUT09LENSWVBUT19LRVlQQURfRU5DLDIwMjMwMzEwMTYwNDQ0MjEz"
+    userCI = "OJh4xJgF8IB4pbbXd9RPQVjZ1BiZJwJXSm0tsczgfOVjQoYBgqWR9Knkxdn6hTkydUiaGQOc4bo/ONd6tTCAuQ=="
+
+    def __init__(self, uid):
+    
+        self.uid = uid
+        df = db_get(self.uid)
+        self.csNo = df[0][0]
+        self.pinNo = df[0][1]
+        self.accountId = df[0][4]
+
+    def account_get(self):
+
+        res = requests.get(url = f"{self.endpoint}/kb/v1/accounts/{self.accountId}/bond?userNumber={self.csNo}&userPinCode={self.pinNo}").json()
+        print(res)
+        return res
+    
+    def sellorder_post(self, securityCode, boughtDate, quantity = 1, price = 12000):
+
+        data = {
+            "orderType": "SELL",
+            "userNumber": str(self.csNo),
+            "userPinCode": str(self.pinNo),
+            "securityCode": securityCode,
+            "quantity": quantity,
+            "price": price,
+            "boughtDate" : boughtDate
+        }
+        
+        requests.post(url = f"{self.endpoint}/kb/v1/accounts/{self.accountId}/orders/bond/LISTED", data = json.dumps(data))
+
+client_1 = bond_api(withdrawal_uid)
+client_1.account_get()
+
+#%% 
 # TODO 게좌조회
 # def select_account_info():
 #     sql_select = "select stock_company_uid, stock_company_pin, c.stock_account_id, c.uid," \
