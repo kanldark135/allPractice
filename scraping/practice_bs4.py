@@ -15,7 +15,7 @@ soup = BeautifulSoup(res.content, 'html.parser')
 
 menu_list = soup.find('ul', attrs = {'class' : 'navbar-nav ml-auto'})
 txt = menu_list.get_text()
-link_list = [i.attrs('href') for i in menu_list.select('a.nav-link')]
+link_list = [i.attrs['href']) for i in menu_list.select('a.nav-link')]
 
 #%% 3. select 를 활용한 검색. select_one -> html 반환 / select -> 리스트 반환
 
